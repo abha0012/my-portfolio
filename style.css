@@ -501,4 +501,8 @@ footer {
     .about-sidebar {
         margin-top: 40px;
     }
+
+    .left-sidebar {
+        display: none;
+    }
 }
