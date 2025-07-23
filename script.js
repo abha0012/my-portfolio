@@ -92,6 +92,21 @@ document.addEventListener('DOMContentLoaded', () => {
         cursorGlow.style.top = `${e.clientY}px`;
     });
 
+    // Visitor Counter
+    const visitorCountSpan = document.getElementById('visitor-count');
+    let count = localStorage.getItem('visitorCount');
+
+    if (count === null) {
+        count = 1;
+    } else {
+        count = parseInt(count, 10) + 1;
+    }
+
+    localStorage.setItem('visitorCount', count);
+    if (visitorCountSpan) {
+        visitorCountSpan.textContent = count;
+    }
+
     // Form submission handling
     const form = document.querySelector('.contact-form');
     async function handleSubmit(event) {
