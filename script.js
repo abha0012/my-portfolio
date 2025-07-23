@@ -91,4 +91,40 @@ document.addEventListener('DOMContentLoaded', () => {
         cursorGlow.style.left = `${e.clientX}px`;
         cursorGlow.style.top = `${e.clientY}px`;
     });
+
+    // Form submission handling
+    const form = document.querySelector('.contact-form');
+    async function handleSubmit(event) {
+        event.preventDefault();
+        const status = document.createElement('p');
+        try {
+            const data = new FormData(event.target);
+            const response = await fetch(event.target.action, {
+                method: form.method,
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                status.innerHTML = "Thanks for your submission!";
+                form.parentNode.insertBefore(status, form.nextSibling);
+                form.reset();
+            } else {
+                response.json().then(data => {
+                    if (Object.hasOwn(data, 'errors')) {
+                        status.innerHTML = data["errors"].map(error => error["message"]).join(", ");
+                    } else {
+                        status.innerHTML = "Oops! There was a problem submitting your form";
+                    }
+                    form.parentNode.insertBefore(status, form.nextSibling);
+                });
+            }
+        } catch (error) {
+            status.innerHTML = "Oops! There was a problem submitting your form";
+            form.parentNode.insertBefore(status, form.nextSibling);
+        }
+    }
+    form.addEventListener("submit", handleSubmit);
 });
